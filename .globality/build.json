@@ -1,0 +1,10 @@
+{
+  "type": "python-service",
+  "version": "0.1.0",
+  "params": {
+    "name": "peetza",
+    "databases": [
+      "postgres"
+    ]
+  }
+}
