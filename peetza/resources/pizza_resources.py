@@ -8,19 +8,17 @@ from microcosm_flask.namespaces import Namespace
 from microcosm_flask.operations import Operation
 from microcosm_flask.paging import PageSchema
 
-from peetza.models.example_model import Example
+from peetza.models.pizza_model import Pizza
 
 
-class NewExampleSchema(Schema):
-    name = fields.String(
-        required=True,
-    )
+class NewPizzaSchema(Schema):
+    pizza_size = fields.String(required=True)
+    pizza_type = fields.String(required=True)
 
 
-class ExampleSchema(NewExampleSchema):
-    id = fields.UUID(
-        required=True,
-    )
+class PizzaSchema(NewPizzaSchema):
+    id = fields.UUID(required=True)
+
     _links = fields.Method(
         "get_links",
         dump_only=True,
@@ -31,13 +29,14 @@ class ExampleSchema(NewExampleSchema):
         links["self"] = Link.for_(
             Operation.Retrieve,
             Namespace(
-                subject=Example,
+                subject=Pizza,
                 version="v1",
             ),
-            example_id=obj.id,
+            pizza_id=obj.id,
         )
         return links.to_dict()
 
 
-class SearchExampleSchema(PageSchema):
-    name = fields.String()
+class SearchPizzaSchema(PageSchema):
+    pizza_size = fields.String()
+    pizza_type = fields.String()
