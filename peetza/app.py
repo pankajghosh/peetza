@@ -8,9 +8,9 @@ from microcosm.loaders.compose import load_config_and_secrets
 from microcosm_secretsmanager.loaders.conventions import load_from_secretsmanager
 
 import peetza.postgres  # noqa
-import peetza.routes.example.controller  # noqa
-import peetza.routes.example.crud   # noqa
-import peetza.stores.example_store  # noqa
+import peetza.routes.pizza.controller  # noqa
+import peetza.routes.pizza.crud   # noqa
+import peetza.stores.pizza_store    # noqa
 from peetza.config import load_default_config
 
 
@@ -37,7 +37,7 @@ def create_app(debug=False, testing=False, model_only=False):
     )
 
     graph.use(
-        "example_store",
+        "pizza_store",
         "logging",
         "postgres",
         "sessionmaker",
@@ -56,7 +56,7 @@ def create_app(debug=False, testing=False, model_only=False):
             "postgres_health_check",
             "swagger_convention",
             # routes
-            "example_routes",
+            "pizza_routes",
         )
 
     return graph.lock()

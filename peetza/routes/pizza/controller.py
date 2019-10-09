@@ -6,16 +6,16 @@ from microcosm.api import binding
 from microcosm_flask.conventions.crud_adapter import CRUDStoreAdapter
 from microcosm_flask.namespaces import Namespace
 
-from peetza.models.example_model import Example
+from peetza.models.pizza_model import Pizza
 
 
-@binding("example_controller")
-class ExampleController(CRUDStoreAdapter):
+@binding("pizza_controller")
+class PizzaController(CRUDStoreAdapter):
 
     def __init__(self, graph):
-        super().__init__(graph, graph.example_store)
+        super().__init__(graph, graph.pizza_store)
 
         self.ns = Namespace(
-            subject=Example,
+            subject=Pizza,
             version="v1",
         )

@@ -19,21 +19,20 @@ from microcosm_postgres.identifiers import new_object_id
 from microcosm_postgres.operations import recreate_all
 
 from peetza.app import create_app
-from peetza.models.example_model import Example
+from peetza.models.pizza_model import PizzaType, PizzaSize, Pizza
 
 
-class TestExampleRoutes:
+class TestPizzaRoutes:
 
     def setup(self):
         self.graph = create_app(testing=True)
         self.client = self.graph.flask.test_client()
         recreate_all(self.graph)
 
-        self.name1 = "name1"
-
-        self.example1 = Example(
+        self.new_pizza = Pizza(
             id=new_object_id(),
-            name=self.name1,
+            pizza_size=PizzaSize.SMALL.name,
+            pizza_type=PizzaType.HANDTOSSED.name,
         )
 
     def teardown(self):
@@ -41,9 +40,9 @@ class TestExampleRoutes:
 
     def test_search(self):
         with SessionContext(self.graph), transaction():
-            self.example1.create()
+            self.new_pizza.create()
 
-        uri = "/api/v1/example"
+        uri = "/api/v1/pizza"
 
         response = self.client.get(uri)
 
@@ -53,41 +52,21 @@ class TestExampleRoutes:
             has_entries(
                 items=contains(
                     has_entries(
-                        id=str(self.example1.id),
-                        name=self.example1.name,
+                        pizza_size=self.new_pizza.pizza_size,
+                        pizza_type=self.new_pizza.pizza_type,
                     ),
                 ),
             ),
         )
 
-    def test_create(self):
-        uri = "/api/v1/example"
-
-        with patch.object(self.graph.example_store, "new_object_id") as mocked:
-            mocked.return_value = self.example1.id
-            response = self.client.post(
-                uri,
-                json=dict(
-                    name=self.example1.name,
-                ),
-            )
-
-        assert_that(response.status_code, is_(equal_to(201)))
-        assert_that(
-            response.json,
-            has_entries(
-                id=str(self.example1.id),
-                name=self.example1.name,
-            ),
-        )
-
     def test_replace_with_new(self):
-        uri = f"/api/v1/example/{self.example1.id}"
+        uri = f"/api/v1/pizza/{self.new_pizza.id}"
 
         response = self.client.put(
             uri,
             json=dict(
-                name=self.example1.name,
+                pizza_size=self.new_pizza.pizza_size,
+                pizza_type=self.new_pizza.pizza_type,
             ),
         )
 
@@ -95,32 +74,34 @@ class TestExampleRoutes:
         assert_that(
             response.json,
             has_entries(
-                id=str(self.example1.id),
-                name=self.example1.name,
+                id=str(self.new_pizza.id),
+                pizza_size=self.new_pizza.pizza_size,
+                pizza_type=self.new_pizza.pizza_type,
             ),
         )
 
     def test_retrieve(self):
         with SessionContext(self.graph), transaction():
-            self.example1.create()
+            self.new_pizza.create()
 
-        uri = f"/api/v1/example/{self.example1.id}"
+        uri = f"/api/v1/pizza/{self.new_pizza.id}"
 
         response = self.client.get(uri)
 
         assert_that(
             response.json,
             has_entries(
-                id=str(self.example1.id),
-                name=self.example1.name,
+                id=str(self.new_pizza.id),
+                pizza_size=self.new_pizza.pizza_size,
+                pizza_type=self.new_pizza.pizza_type,
             ),
         )
 
     def test_delete(self):
         with SessionContext(self.graph), transaction():
-            self.example1.create()
+            self.new_pizza.create()
 
-        uri = f"/api/v1/example/{self.example1.id}"
+        uri = f"/api/v1/pizza/{self.new_pizza.id}"
 
         response = self.client.delete(uri)
         assert_that(response.status_code, is_(equal_to(204)))
