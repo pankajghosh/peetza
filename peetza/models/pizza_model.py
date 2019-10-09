@@ -3,12 +3,12 @@ An example model.
 
 """
 from collections import namedtuple
-from enum import unique, Enum
+from enum import Enum, unique
 
 from microcosm_postgres.models import EntityMixin, Model
 from microcosm_postgres.types import EnumType
-from sqlalchemy import Column, String
-from sqlalchemy_utils import UUIDType
+from sqlalchemy import Column
+
 
 PizzaTypeInfo = namedtuple(
     "PizzaTypeInfo",
@@ -17,6 +17,7 @@ PizzaTypeInfo = namedtuple(
         "description",
     ],
 )
+
 
 @unique
 class PizzaType(Enum):

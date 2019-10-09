@@ -13,5 +13,3 @@ class PizzaStore(Store):
 
     def __init__(self, graph):
         super().__init__(self, Pizza)
-
-

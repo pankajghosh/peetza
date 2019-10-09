@@ -5,7 +5,6 @@ Tests are sunny day cases under the assumption that framework conventions
 handle most error conditions.
 
 """
-from unittest.mock import patch
 
 from hamcrest import (
     assert_that,
@@ -19,7 +18,7 @@ from microcosm_postgres.identifiers import new_object_id
 from microcosm_postgres.operations import recreate_all
 
 from peetza.app import create_app
-from peetza.models.pizza_model import PizzaType, PizzaSize, Pizza
+from peetza.models.pizza_model import Pizza, PizzaSize, PizzaType
 
 
 class TestPizzaRoutes:

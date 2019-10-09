@@ -7,15 +7,14 @@ handle most boilerplate.
 """
 from hamcrest import (
     assert_that,
-    calling,
     equal_to,
+    has_length,
     is_,
-    raises,
-    has_length)
+)
 from microcosm_postgres.context import SessionContext, transaction
 
 from peetza.app import create_app
-from peetza.models.pizza_model import PizzaType, PizzaSize, Pizza
+from peetza.models.pizza_model import Pizza, PizzaSize, PizzaType
 
 
 class TestPizzas:
@@ -50,13 +49,11 @@ class TestPizzas:
     def test_create_multiple(self):
         with transaction():
             self.pizza_store.create(Pizza(
-            pizza_size=self.pizza_size,
-            pizza_type=self.pizza_type,))
+                pizza_size=self.pizza_size,
+                pizza_type=self.pizza_type, ))
 
             self.pizza_store.create(Pizza(
-            pizza_size=self.pizza_size,
-            pizza_type=self.pizza_type,))
+                pizza_size=self.pizza_size,
+                pizza_type=self.pizza_type, ))
 
         assert_that(self.pizza_store.search(), has_length(2))
-
-
