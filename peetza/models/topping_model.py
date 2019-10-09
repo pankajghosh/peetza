@@ -1,4 +1,3 @@
-from collections import namedtuple
 from enum import Enum, unique
 
 from microcosm_postgres.models import EntityMixin, Model
