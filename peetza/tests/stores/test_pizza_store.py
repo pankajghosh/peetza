@@ -17,7 +17,7 @@ from peetza.app import create_app
 from peetza.models.pizza_model import Pizza, PizzaSize, PizzaType
 
 
-class TestPizzas:
+class TestPizzaStore:
 
     def setup(self):
         self.graph = create_app(testing=True)
