@@ -12,11 +12,10 @@ from hamcrest import (
     is_,
 )
 from microcosm_postgres.context import SessionContext, transaction
-from microcosm_postgres.identifiers import new_object_id
 
 from peetza.app import create_app
 from peetza.models.pizza_model import Pizza, PizzaSize, PizzaType
-from peetza.models.topping_model import ToppingType, Topping
+from peetza.models.topping_model import Topping, ToppingType
 
 
 class TestToppingStore:
@@ -44,8 +43,8 @@ class TestToppingStore:
 
     def test_create(self):
         new_topping = Topping(
-            pizza_id = self.new_pizza.id,
-            topping_type = ToppingType.CHICKEN,
+            pizza_id=self.new_pizza.id,
+            topping_type=ToppingType.CHICKEN,
         )
 
         with transaction():
@@ -56,12 +55,12 @@ class TestToppingStore:
 
     def test_search_toppings(self):
         Topping(
-            pizza_id = self.new_pizza.id,
-            topping_type = ToppingType.CHICKEN,
+            pizza_id=self.new_pizza.id,
+            topping_type=ToppingType.CHICKEN,
         ).create()
         Topping(
-            pizza_id = self.new_pizza.id,
-            topping_type = ToppingType.ONIONS,
+            pizza_id=self.new_pizza.id,
+            topping_type=ToppingType.ONIONS,
         ).create()
 
         assert_that(self.topping_store.search(pizza_id=self.new_pizza.id), has_length(2))
@@ -69,8 +68,8 @@ class TestToppingStore:
     def test_delete_topping(self):
         assert_that(self.topping_store.search(pizza_id=self.new_pizza.id), has_length(0))
         new_topping = Topping(
-            pizza_id = self.new_pizza.id,
-            topping_type = ToppingType.CHICKEN,
+            pizza_id=self.new_pizza.id,
+            topping_type=ToppingType.CHICKEN,
         ).create()
 
         assert_that(self.topping_store.search(pizza_id=self.new_pizza.id), has_length(1))

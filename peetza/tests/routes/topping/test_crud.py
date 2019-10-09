@@ -11,8 +11,9 @@ from hamcrest import (
     contains,
     equal_to,
     has_entries,
+    has_length,
     is_,
-    has_length)
+)
 from microcosm_postgres.context import SessionContext, transaction
 from microcosm_postgres.identifiers import new_object_id
 from microcosm_postgres.operations import recreate_all
