@@ -7,17 +7,6 @@ from microcosm.loaders import load_each, load_from_environ, load_from_json_file
 from microcosm.loaders.compose import load_config_and_secrets
 from microcosm_secretsmanager.loaders.conventions import load_from_secretsmanager
 
-import peetza.postgres  # noqa
-import peetza.routes.pizza.controller  # noqa
-import peetza.routes.pizza.crud     # noqa
-import peetza.stores.pizza_store    # noqa
-import peetza.routes.topping.controller # noqa
-import peetza.routes.topping.crud   # noqa
-import peetza.stores.topping_store  # noqa
-import peetza.routes.order.crud     # noqa
-import peetza.routes.order.controller   # noqa
-import peetza.stores.order_store    # noqa
-
 from peetza.config import load_default_config
 
 

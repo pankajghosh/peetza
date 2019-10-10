@@ -7,9 +7,10 @@ handle most boilerplate.
 """
 from hamcrest import (
     assert_that,
+    calling,
     equal_to,
     is_,
-    calling)
+)
 from hamcrest.core.core import raises
 from microcosm_postgres.context import SessionContext, transaction
 from microcosm_postgres.errors import ModelNotFoundError

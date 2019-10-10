@@ -7,8 +7,9 @@ from enum import Enum, unique
 
 from microcosm_postgres.models import EntityMixin, Model
 from microcosm_postgres.types import EnumType
-from sqlalchemy import Column, Index, ForeignKey
+from sqlalchemy import Column, ForeignKey, Index
 from sqlalchemy_utils import UUIDType
+
 
 PizzaTypeInfo = namedtuple(
     "PizzaTypeInfo",

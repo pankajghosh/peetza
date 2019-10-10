@@ -8,7 +8,6 @@ from microcosm_flask.namespaces import Namespace
 from microcosm_flask.operations import Operation
 
 from peetza.models.order_model import Order
-from peetza.models.pizza_model import Pizza
 
 
 class NewOrderSchema(Schema):
@@ -33,12 +32,12 @@ class OrderSchema(NewOrderSchema):
             ),
             order_id=obj.id,
         )
-        links["child:pizza"] = Link.for_(
-            Operation.Retrieve,
-            Namespace(
-                subject=Pizza,
-                version="v1",
-            ),
-            pizza_id=obj.pizza_id,
-        )
+        # links["child:pizza"] = Link.for_(
+        #     Operation.Retrieve,
+        #     Namespace(
+        #         subject=Pizza,
+        #         version="v1",
+        #     ),
+        #     pizza_id=obj.pizza_id,
+        # )
         return links.to_dict()

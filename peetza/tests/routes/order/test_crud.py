@@ -8,7 +8,6 @@ handle most error conditions.
 
 from hamcrest import (
     assert_that,
-    contains,
     equal_to,
     has_entries,
     is_,
@@ -19,7 +18,6 @@ from microcosm_postgres.operations import recreate_all
 
 from peetza.app import create_app
 from peetza.models.order_model import Order
-from peetza.models.pizza_model import Pizza, PizzaSize, PizzaType
 
 
 class TestOrderRoutes:
@@ -36,11 +34,11 @@ class TestOrderRoutes:
     def teardown(self):
         self.graph.postgres.dispose()
 
-    def test_search(self):
+    def test_create_and_retrieve(self):
         with SessionContext(self.graph), transaction():
             self.new_order.create()
 
-        uri = "/api/v1/order"
+        uri = f"/api/v1/order/{self.new_order.id}"
 
         response = self.client.get(uri)
 
@@ -48,58 +46,15 @@ class TestOrderRoutes:
         assert_that(
             response.json,
             has_entries(
-                items=contains(
-                    has_entries(
-                        order_id=self.new_order.id,
-                    ),
-                ),
+                id=str(self.new_order.id),
             ),
         )
 
-    # def test_replace_with_new(self):
-    #     uri = f"/api/v1/pizza/{self.new_pizza.id}"
-    #
-    #     response = self.client.put(
-    #         uri,
-    #         json=dict(
-    #             order_id=self.new_order.id,
-    #             pizza_size=self.new_pizza.pizza_size,
-    #             pizza_type=self.new_pizza.pizza_type,
-    #         ),
-    #     )
-    #
-    #     assert_that(response.status_code, is_(equal_to(200)))
-    #     assert_that(
-    #         response.json,
-    #         has_entries(
-    #             id=str(self.new_pizza.id),
-    #             pizza_size=self.new_pizza.pizza_size,
-    #             pizza_type=self.new_pizza.pizza_type,
-    #         ),
-    #     )
-    #
-    # def test_retrieve(self):
-    #     with SessionContext(self.graph), transaction():
-    #         self.new_pizza.create()
-    #
-    #     uri = f"/api/v1/pizza/{self.new_pizza.id}"
-    #
-    #     response = self.client.get(uri)
-    #
-    #     assert_that(
-    #         response.json,
-    #         has_entries(
-    #             id=str(self.new_pizza.id),
-    #             pizza_size=self.new_pizza.pizza_size,
-    #             pizza_type=self.new_pizza.pizza_type,
-    #         ),
-    #     )
-    #
-    # def test_delete(self):
-    #     with SessionContext(self.graph), transaction():
-    #         self.new_pizza.create()
-    #
-    #     uri = f"/api/v1/pizza/{self.new_pizza.id}"
-    #
-    #     response = self.client.delete(uri)
-    #     assert_that(response.status_code, is_(equal_to(204)))
+    def test_delete(self):
+        with SessionContext(self.graph), transaction():
+            self.new_order.create()
+
+        uri = f"/api/v1/order/{self.new_order.id}"
+
+        response = self.client.delete(uri)
+        assert_that(response.status_code, is_(equal_to(204)))

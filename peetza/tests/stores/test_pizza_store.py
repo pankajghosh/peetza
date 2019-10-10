@@ -33,14 +33,13 @@ class TestPizzaStore:
 
         self.new_order = Order().create()
 
-
     def teardown(self):
         self.context.close()
         self.graph.postgres.dispose()
 
     def test_create(self):
         new_pizza = Pizza(
-            order_id = self.new_order.id,
+            order_id=self.new_order.id,
             pizza_size=self.pizza_size,
             pizza_type=self.pizza_type,
         )
