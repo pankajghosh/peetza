@@ -14,6 +14,7 @@ from hamcrest import (
 from microcosm_postgres.context import SessionContext, transaction
 
 from peetza.app import create_app
+from peetza.models.order_model import Order
 from peetza.models.pizza_model import Pizza, PizzaSize, PizzaType
 from peetza.models.topping_model import Topping, ToppingType
 
@@ -32,7 +33,10 @@ class TestToppingStore:
         self.context.recreate_all()
         self.context.open()
 
+        self.new_order = Order().create()
+
         self.new_pizza = Pizza(
+            order_id=self.new_order.id,
             pizza_size=self.pizza_size,
             pizza_type=self.pizza_type,
         ).create()

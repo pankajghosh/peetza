@@ -19,6 +19,7 @@ from microcosm_postgres.identifiers import new_object_id
 from microcosm_postgres.operations import recreate_all
 
 from peetza.app import create_app
+from peetza.models.order_model import Order
 from peetza.models.pizza_model import Pizza, PizzaSize, PizzaType
 from peetza.models.topping_model import Topping, ToppingType
 
@@ -31,8 +32,11 @@ class TestToppingRoutes:
         recreate_all(self.graph)
 
         with SessionContext(self.graph), transaction():
+            self.new_order = Order().create()
+
             self.new_pizza = Pizza(
                 id=new_object_id(),
+                order_id=self.new_order.id,
                 pizza_size=PizzaSize.SMALL.name,
                 pizza_type=PizzaType.HANDTOSSED.name,
             ).create()
