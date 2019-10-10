@@ -7,8 +7,8 @@ from enum import Enum, unique
 
 from microcosm_postgres.models import EntityMixin, Model
 from microcosm_postgres.types import EnumType
-from sqlalchemy import Column
-
+from sqlalchemy import Column, Index, ForeignKey
+from sqlalchemy_utils import UUIDType
 
 PizzaTypeInfo = namedtuple(
     "PizzaTypeInfo",
@@ -56,5 +56,13 @@ class Pizza(EntityMixin, Model):
     """
     __tablename__ = "pizza"
 
+    order_id = Column(UUIDType(), ForeignKey("order.id"), nullable=False)
     pizza_size = Column(EnumType(PizzaSize), nullable=False)
     pizza_type = Column(EnumType(PizzaType), nullable=False)
+
+    __table_args__ = (
+        Index(
+            "pizza_order_id_idx",
+            order_id,
+        ),
+    )

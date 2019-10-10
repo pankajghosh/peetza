@@ -6,18 +6,16 @@ from marshmallow import Schema, fields
 from microcosm_flask.linking import Link, Links
 from microcosm_flask.namespaces import Namespace
 from microcosm_flask.operations import Operation
-from microcosm_flask.paging import PageSchema
 
+from peetza.models.order_model import Order
 from peetza.models.pizza_model import Pizza
 
 
-class NewPizzaSchema(Schema):
-    order_id = fields.UUID(required=True)
-    pizza_size = fields.String(required=True)
-    pizza_type = fields.String(required=True)
+class NewOrderSchema(Schema):
+    pass
 
 
-class PizzaSchema(NewPizzaSchema):
+class OrderSchema(NewOrderSchema):
     id = fields.UUID(required=True)
 
     _links = fields.Method(
@@ -30,15 +28,17 @@ class PizzaSchema(NewPizzaSchema):
         links["self"] = Link.for_(
             Operation.Retrieve,
             Namespace(
+                subject=Order,
+                version="v1",
+            ),
+            order_id=obj.id,
+        )
+        links["child:pizza"] = Link.for_(
+            Operation.Retrieve,
+            Namespace(
                 subject=Pizza,
                 version="v1",
             ),
-            pizza_id=obj.id,
+            pizza_id=obj.pizza_id,
         )
         return links.to_dict()
-
-
-class SearchPizzaSchema(PageSchema):
-    order_id = fields.UUID()
-    pizza_size = fields.String()
-    pizza_type = fields.String()

@@ -26,7 +26,7 @@ class Topping(EntityMixin, Model):
 
     __table_args__ = (
         Index(
-            "constraint_pizza_id_idx",
+            "topping_pizza_id_idx",
             pizza_id,
         ),
         Index(
