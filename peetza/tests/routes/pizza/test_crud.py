@@ -18,6 +18,7 @@ from microcosm_postgres.identifiers import new_object_id
 from microcosm_postgres.operations import recreate_all
 
 from peetza.app import create_app
+from peetza.models.order_model import Order
 from peetza.models.pizza_model import Pizza, PizzaSize, PizzaType
 
 
@@ -27,9 +28,12 @@ class TestPizzaRoutes:
         self.graph = create_app(testing=True)
         self.client = self.graph.flask.test_client()
         recreate_all(self.graph)
+        with SessionContext(self.graph), transaction():
+            self.new_order = Order().create()
 
         self.new_pizza = Pizza(
             id=new_object_id(),
+            order_id=self.new_order.id,
             pizza_size=PizzaSize.SMALL.name,
             pizza_type=PizzaType.HANDTOSSED.name,
         )
@@ -64,6 +68,7 @@ class TestPizzaRoutes:
         response = self.client.put(
             uri,
             json=dict(
+                order_id=self.new_order.id,
                 pizza_size=self.new_pizza.pizza_size,
                 pizza_type=self.new_pizza.pizza_type,
             ),

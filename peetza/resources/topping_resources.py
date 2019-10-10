@@ -3,21 +3,22 @@ Example resources.
 
 """
 from marshmallow import Schema, fields
+from microcosm_flask.fields import EnumField
 from microcosm_flask.linking import Link, Links
 from microcosm_flask.namespaces import Namespace
 from microcosm_flask.operations import Operation
 from microcosm_flask.paging import PageSchema
 
 from peetza.models.pizza_model import Pizza
+from peetza.models.topping_model import Topping, ToppingType
 
 
-class NewPizzaSchema(Schema):
-    order_id = fields.UUID(required=True)
-    pizza_size = fields.String(required=True)
-    pizza_type = fields.String(required=True)
+class NewToppingSchema(Schema):
+    pizza_id = fields.UUID(attribute='pizza_id', required=True)
+    topping_type = fields.String(required=True)
 
 
-class PizzaSchema(NewPizzaSchema):
+class ToppingSchema(NewToppingSchema):
     id = fields.UUID(required=True)
 
     _links = fields.Method(
@@ -30,15 +31,22 @@ class PizzaSchema(NewPizzaSchema):
         links["self"] = Link.for_(
             Operation.Retrieve,
             Namespace(
+                subject=Topping,
+                version="v1",
+            ),
+            topping_id=obj.id,
+        )
+        links["parent:pizza"] = Link.for_(
+            Operation.Retrieve,
+            Namespace(
                 subject=Pizza,
                 version="v1",
             ),
-            pizza_id=obj.id,
+            pizza_id=obj.pizza_id,
         )
         return links.to_dict()
 
 
-class SearchPizzaSchema(PageSchema):
-    order_id = fields.UUID()
-    pizza_size = fields.String()
-    pizza_type = fields.String()
+class SearchToppingSchema(PageSchema):
+    pizza_id = fields.UUID(required=True,)
+    topping_type = EnumField(ToppingType)

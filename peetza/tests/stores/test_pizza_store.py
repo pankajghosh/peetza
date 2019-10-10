@@ -14,10 +14,11 @@ from hamcrest import (
 from microcosm_postgres.context import SessionContext, transaction
 
 from peetza.app import create_app
+from peetza.models.order_model import Order
 from peetza.models.pizza_model import Pizza, PizzaSize, PizzaType
 
 
-class TestPizzas:
+class TestPizzaStore:
 
     def setup(self):
         self.graph = create_app(testing=True)
@@ -30,12 +31,15 @@ class TestPizzas:
         self.context.recreate_all()
         self.context.open()
 
+        self.new_order = Order().create()
+
     def teardown(self):
         self.context.close()
         self.graph.postgres.dispose()
 
     def test_create(self):
         new_pizza = Pizza(
+            order_id=self.new_order.id,
             pizza_size=self.pizza_size,
             pizza_type=self.pizza_type,
         )
@@ -49,10 +53,12 @@ class TestPizzas:
     def test_create_multiple(self):
         with transaction():
             self.pizza_store.create(Pizza(
+                order_id=self.new_order.id,
                 pizza_size=self.pizza_size,
                 pizza_type=self.pizza_type, ))
 
             self.pizza_store.create(Pizza(
+                order_id=self.new_order.id,
                 pizza_size=self.pizza_size,
                 pizza_type=self.pizza_type, ))
 
