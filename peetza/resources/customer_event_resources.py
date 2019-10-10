@@ -3,7 +3,7 @@ Example resources.
 
 """
 from marshmallow import Schema, fields
-from microcosm_eventsource.resources import EventSchema
+from microcosm_eventsource.resources import EventSchema, SearchEventSchema
 from microcosm_flask.fields import EnumField
 from microcosm_flask.linking import Link, Links
 from microcosm_flask.namespaces import Namespace
@@ -16,9 +16,8 @@ from peetza.models.topping_model import ToppingType
 
 
 class NewCustomerEventSchema(Schema):
-    eventType = EnumField(
+    event_type = EnumField(
         CustomerEventType,
-        attribute="event_type",
         required=True,
     )
     pizza_id = fields.UUID()
@@ -53,3 +52,15 @@ class CustomerEventSchema(NewCustomerEventSchema, EventSchema):
             order_id=obj.id,
         )
         return links.to_dict()
+
+
+class SearchCustomerEventSchema(SearchEventSchema):
+    event_type = EnumField(
+        CustomerEventType,
+    )
+    pizza_id = fields.UUID()
+    order_id = fields.UUID()
+
+    pizza_size = EnumField(PizzaSize)
+    pizza_type = EnumField(PizzaType)
+    topping_type = EnumField(ToppingType)

@@ -7,19 +7,21 @@ handle most boilerplate.
 """
 from hamcrest import (
     assert_that,
+    calling,
     equal_to,
     is_,
-    calling, raises)
+    raises,
+)
 from microcosm_postgres.context import SessionContext, transaction
 from microcosm_postgres.errors import ModelNotFoundError
 
 from peetza.app import create_app
-from peetza.models.customer_event_model import CustomerStartedOrder, CustomerAddedTopping
+from peetza.models.customer_event_model import CustomerAddedTopping, CustomerStartedOrder
 from peetza.models.order_model import Order
 from peetza.models.topping_model import ToppingType
 
 
-class TestOrderStore:
+class TestCustomerEventStore:
 
     def setup(self):
         self.graph = create_app(testing=True)

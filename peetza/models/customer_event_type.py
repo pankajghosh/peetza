@@ -1,5 +1,5 @@
 from microcosm_eventsource.event_types import EventType, event_info
-from microcosm_eventsource.transitioning import nothing, any_of
+from microcosm_eventsource.transitioning import any_of, nothing
 
 
 class CustomerEventType(EventType):

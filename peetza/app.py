@@ -17,6 +17,8 @@ import peetza.stores.topping_store  # noqa
 import peetza.routes.order.crud     # noqa
 import peetza.routes.order.controller   # noqa
 import peetza.stores.order_store    # noqa
+import peetza.routes.customer_event.crud    # noqa
+import peetza.routes.customer_event.controller    # noqa
 import peetza.stores.customer_event_store   # noqa
 from peetza.config import load_default_config
 
@@ -69,6 +71,7 @@ def create_app(debug=False, testing=False, model_only=False):
             "pizza_routes",
             "topping_routes",
             "order_routes",
+            "customer_event_routes",
         )
 
     return graph.lock()

@@ -6,7 +6,7 @@ from sqlalchemy_utils import UUIDType
 
 from peetza.models.customer_event_type import CustomerEventType
 from peetza.models.order_model import Order
-from peetza.models.pizza_model import PizzaType, PizzaSize
+from peetza.models.pizza_model import PizzaSize, PizzaType
 from peetza.models.topping_model import ToppingType
 
 
