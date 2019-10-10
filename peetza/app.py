@@ -17,6 +17,7 @@ import peetza.stores.topping_store  # noqa
 import peetza.routes.order.crud     # noqa
 import peetza.routes.order.controller   # noqa
 import peetza.stores.order_store    # noqa
+import peetza.stores.customer_event_store   # noqa
 from peetza.config import load_default_config
 
 
@@ -46,6 +47,7 @@ def create_app(debug=False, testing=False, model_only=False):
         "pizza_store",
         "topping_store",
         "order_store",
+        "customer_event_store",
         "logging",
         "postgres",
         "sessionmaker",
