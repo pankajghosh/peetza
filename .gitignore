@@ -60,6 +60,7 @@ var/
 *.egg
 .idea/
 venv/
+coverage/
 
 
 # PyInstaller

@@ -22,6 +22,7 @@ setup(
         "microcosm-postgres>=1.9.1",
         "microcosm-secretsmanager>=1.1.0",
         "pyOpenSSL>=18.0.0",
+        "microcosm-eventsource>=2.0.0",
     ],
     setup_requires=[
         "nose>=1.3.7",
